@@ -1,0 +1,30 @@
+<view class="container">
+  <view wx:if="{{ activity }}" class="card">
+    <view class="detail-title">{{ activity.title }}</view>
+
+    <van-cell-group inset>
+      <van-cell title="主办方" value="{{ activity.organizer }}" />
+      <van-cell title="活动日期" value="{{ activity.date }}" />
+      <van-cell title="时间" value="{{ activity.start_time }} - {{ activity.end_time }}" />
+      <van-cell title="地点" value="{{ activity.location }}" />
+    </van-cell-group>
+
+    <view class="mt-24">
+      <view class="cell-label">活动描述</view>
+      <view class="desc-text">{{ activity.description }}</view>
+    </view>
+  </view>
+
+  <view class="card mt-24">
+    <view class="progress-title">审批进度</view>
+    <van-steps
+      steps="{{ steps }}"
+      active="{{ activeStep }}"
+      active-icon="success"
+      inactive-icon="arrow"
+      direction="vertical"
+    />
+  </view>
+</view>
+
+<van-empty wx:if="{{ !activity }}" description="活动不存在" image="network" />

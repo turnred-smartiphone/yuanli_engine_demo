@@ -1,0 +1,6 @@
+.detail-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 24rpx;
+}

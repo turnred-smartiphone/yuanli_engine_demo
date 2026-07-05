@@ -1,0 +1,110 @@
+<view class="container">
+  <view class="card">
+    <view class="form-title">活动信息填写</view>
+
+    <van-cell-group inset>
+      <van-field
+        model:value="{{ form.title }}"
+        label="活动标题"
+        placeholder="请输入活动标题"
+        required
+      />
+      <van-field
+        model:value="{{ form.description }}"
+        label="活动描述"
+        type="textarea"
+        placeholder="请描述活动详情"
+        required
+        autosize
+      />
+      <van-field
+        model:value="{{ form.organizer }}"
+        label="主办方"
+        placeholder="请输入主办方"
+        readonly
+        bind:tap="showOrgPick"
+        right-icon="arrow"
+        required
+      />
+      <van-field
+        model:value="{{ form.date }}"
+        label="活动日期"
+        placeholder="请选择日期"
+        readonly
+        bind:tap="showDatePick"
+        right-icon="arrow"
+        required
+      />
+      <van-field
+        model:value="{{ form.startTime }}"
+        label="开始时间"
+        placeholder="请选择开始时间"
+        readonly
+        bind:tap="showStartTime"
+        right-icon="arrow"
+        required
+      />
+      <van-field
+        model:value="{{ form.endTime }}"
+        label="结束时间"
+        placeholder="请选择结束时间"
+        readonly
+        bind:tap="showEndTime"
+        right-icon="arrow"
+        required
+      />
+      <van-field
+        model:value="{{ form.location }}"
+        label="活动地点"
+        placeholder="请输入活动地点"
+        required
+      />
+    </van-cell-group>
+
+    <view class="submit-area">
+      <van-button
+        type="primary"
+        size="large"
+        round
+        block
+        loading="{{submitting}}"
+        bind:click="handleSubmit"
+      >
+        提交申请
+      </van-button>
+      <view class="submit-tip mt-16 text-center text-secondary">
+        提交后将进入审批流程：主席审批 → 老师审批
+      </view>
+    </view>
+  </view>
+
+  <van-popup show="{{ showDate }}" position="bottom" bind:close="onDateClose">
+    <van-datetime-picker
+      type="date"
+      value="{{ currentDate }}"
+      min-date="{{ minDate }}"
+      bind:confirm="onDateConfirm"
+      bind:cancel="onDateClose"
+    />
+  </van-popup>
+
+  <van-popup show="{{ showStartTime }}" position="bottom" bind:close="onStartClose">
+    <van-datetime-picker
+      type="time"
+      value="{{ currentStart }}"
+      bind:confirm="onStartConfirm"
+      bind:cancel="onStartClose"
+    />
+  </van-popup>
+
+  <van-popup show="{{ showEndTime }}" position="bottom" bind:close="onEndClose">
+    <van-datetime-picker
+      type="time"
+      value="{{ currentEnd }}"
+      bind:confirm="onEndConfirm"
+      bind:cancel="onEndClose"
+    />
+  </van-popup>
+</view>
+
+<van-toast id="van-toast" />

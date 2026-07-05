@@ -1,0 +1,23 @@
+<view class="container">
+  <van-empty
+    wx:if="{{ list.length === 0 && !loading }}"
+    description="暂无申请记录"
+    image="search"
+  />
+
+  <view wx:for="{{ list }}" wx:key="_id" class="card" bind:tap="goDetail" data-id="{{ item._id }}">
+    <view class="flex-between mb-12">
+      <view class="item-title">{{ item.title }}</view>
+      <view class="tag {{ statusClass(item.status) }}">{{ statusText(item.status) }}</view>
+    </view>
+    <view class="text-secondary" style="font-size: 24rpx;">
+      <text>{{ item.date }} {{ item.start_time }}-{{ item.end_time }}</text>
+    </view>
+    <view class="text-secondary mt-8" style="font-size: 24rpx;">
+      <text>{{ item.location }}</text>
+      <text class="ml-24">{{ item.organizer }}</text>
+    </view>
+  </view>
+
+  <van-loading wx:if="{{ loading }}" size="40rpx" style="text-align: center; padding: 40rpx;" />
+</view>

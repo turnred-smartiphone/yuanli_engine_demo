@@ -1,0 +1,12 @@
+.noti-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1F2937;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 12rpx;
+}
+
+.ml-24 { margin-left: 24rpx; }

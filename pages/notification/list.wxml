@@ -1,0 +1,32 @@
+<view class="container">
+  <van-search
+    model:value="{{ keyword }}"
+    placeholder="搜索通知"
+    bind:change="onSearch"
+    bind:search="onSearch"
+  />
+
+  <van-empty
+    wx:if="{{ list.length === 0 && !loading }}"
+    description="暂无通知"
+    image="search"
+  />
+
+  <view wx:for="{{ list }}" wx:key="_id" class="card" bind:tap="goDetail" data-id="{{ item._id }}">
+    <view class="flex-between mb-12">
+      <view class="flex-row">
+        <view class="status-dot {{ item.confirmed ? 'approved' : 'pending' }}"></view>
+        <view class="noti-title">{{ item.title }}</view>
+      </view>
+      <view class="tag {{ item.confirmed ? 'tag-success' : 'tag-warning' }}" style="font-size: 20rpx;">
+        {{ item.confirmed ? '已确认' : '待确认' }}
+      </view>
+    </view>
+    <view class="text-secondary" style="font-size: 24rpx;">
+      <text>{{ item.sender_name }}</text>
+      <text class="ml-24">{{ item.created_at }}</text>
+    </view>
+  </view>
+
+  <van-loading wx:if="{{ loading }}" size="40rpx" style="text-align: center; padding: 40rpx;" />
+</view>

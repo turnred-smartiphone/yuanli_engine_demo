@@ -1,0 +1,25 @@
+<view class="container" wx:if="{{ notification }}">
+  <view class="card">
+    <view class="section-title">{{ notification.title }}</view>
+    <view class="flex-row mt-24" style="justify-content: space-around;">
+      <view class="stat-item">
+        <view class="stat-value text-primary">{{ stats.confirmed }}</view>
+        <view class="stat-label">已确认</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{ stats.total }}</view>
+        <view class="stat-label">总人数</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value text-success">{{ stats.rate }}%</view>
+        <view class="stat-label">确认率</view>
+      </view>
+    </view>
+
+    <view class="progress-bar mt-24">
+      <view class="progress-fill" style="width: {{ stats.rate }}%"></view>
+    </view>
+  </view>
+</view>
+
+<van-empty wx:if="{{ !notification }}" description="通知不存在" image="network" />

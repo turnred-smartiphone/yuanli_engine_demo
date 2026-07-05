@@ -1,0 +1,66 @@
+<view class="container" wx:if="{{ activity }}">
+  <view class="card">
+    <view class="detail-title">{{ activity.title }}</view>
+
+    <van-cell-group inset>
+      <van-cell title="申请人" value="{{ activity.applicant_name }}" />
+      <van-cell title="主办方" value="{{ activity.organizer }}" />
+      <van-cell title="活动日期" value="{{ activity.date }}" />
+      <van-cell title="时间" value="{{ activity.start_time }} - {{ activity.end_time }}" />
+      <van-cell title="地点" value="{{ activity.location }}" />
+      <van-cell title="当前状态">
+        <view slot="value" class="tag tag-warning">{{ statusText }}</view>
+      </van-cell>
+    </van-cell-group>
+
+    <view class="mt-24">
+      <view class="section-title">活动描述</view>
+      <view class="desc-text">{{ activity.description }}</view>
+    </view>
+
+    <view class="mt-24" wx:if="{{ activity.approvals && activity.approvals.length }}">
+      <view class="section-title">审批记录</view>
+      <view class="approval-record" wx:for="{{ activity.approvals }}" wx:key="index">
+        <view class="flex-between">
+          <view class="flex-row">
+            <view class="status-dot {{ item.status }}"></view>
+            <text>{{ item.approver_name }}（{{ item.approver_role }}）</text>
+          </view>
+          <view class="tag {{ item.status === 'approved' ? 'tag-success' : 'tag-danger' }}">
+            {{ item.status === 'approved' ? '通过' : '驳回' }}
+          </view>
+        </view>
+        <view class="text-secondary mt-8" wx:if="{{ item.comment }}" style="font-size: 24rpx;">
+          意见：{{ item.comment }}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="action-area" wx:if="{{ canApprove }}">
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      bind:click="handleApprove"
+      class="mb-16"
+    >
+      通过
+    </van-button>
+    <van-button
+      type="danger"
+      size="large"
+      round
+      block
+      bind:click="handleReject"
+    >
+      驳回
+    </van-button>
+  </view>
+</view>
+
+<van-empty wx:if="{{ !activity }}" description="活动不存在" image="network" />
+
+<van-dialog id="van-dialog" />
+<van-toast id="van-toast" />

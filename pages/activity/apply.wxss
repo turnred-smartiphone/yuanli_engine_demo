@@ -1,0 +1,14 @@
+.form-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1F2937;
+  padding: 0 28rpx 24rpx;
+}
+
+.submit-area {
+  padding: 40rpx 28rpx 20rpx;
+}
+
+.submit-tip {
+  font-size: 22rpx;
+}

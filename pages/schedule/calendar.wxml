@@ -1,0 +1,48 @@
+<view class="container">
+  <view class="calendar-header">
+    <view class="flex-between" style="width: 100%; padding: 0 16rpx;">
+      <view class="month-nav" bind:tap="prevMonth">◀</view>
+      <view class="month-title">{{ year }}年{{ month }}月</view>
+      <view class="month-nav" bind:tap="nextMonth">▶</view>
+    </view>
+    <view class="today-btn" bind:tap="goToday">今天</view>
+  </view>
+
+  <view class="weekday-row">
+    <view class="weekday" wx:for="{{ weekDays }}" wx:key="index">{{ item }}</view>
+  </view>
+
+  <view class="calendar-grid">
+    <view
+      class="day-cell {{ item.isToday ? 'today' : '' }} {{ item.isOtherMonth ? 'other-month' : '' }} {{ item.hasActivity ? 'has-activity' : '' }}"
+      wx:for="{{ days }}"
+      wx:key="index"
+      bind:tap="selectDay"
+      data-date="{{ item.fullDate }}"
+    >
+      <view class="day-num">{{ item.day }}</view>
+      <view class="day-dot" wx:if="{{ item.hasActivity }}"></view>
+    </view>
+  </view>
+
+  <view class="card mt-24" wx:if="{{ selectedDate }}">
+    <view class="card-header">
+      <view class="card-title">{{ selectedDate }} 活动</view>
+      <view class="card-count">{{ dayActivities.length }} 个</view>
+    </view>
+    <view wx:if="{{ dayActivities.length === 0 }}">
+      <van-empty description="当天暂无活动安排" image="search" />
+    </view>
+    <view wx:for="{{ dayActivities }}" wx:key="_id" class="activity-item" bind:tap="goDetail" data-id="{{ item._id }}">
+      <view class="flex-between mb-8">
+        <view class="activity-title">{{ item.title }}</view>
+        <view class="tag tag-primary">{{ item.organizer }}</view>
+      </view>
+      <view class="text-secondary" style="font-size: 24rpx;">
+        {{ item.start_time }} - {{ item.end_time }} | {{ item.location }}
+      </view>
+    </view>
+  </view>
+</view>
+
+<van-toast id="van-toast" />

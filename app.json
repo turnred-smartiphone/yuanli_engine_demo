@@ -1,0 +1,66 @@
+{
+  "pages": [
+    "pages/dashboard/index",
+    "pages/login/login",
+    "pages/bind/bind",
+    "pages/mine/index",
+    "pages/activity/apply",
+    "pages/activity/my",
+    "pages/activity/progress",
+    "pages/approval/list",
+    "pages/approval/detail",
+    "pages/schedule/calendar",
+    "pages/schedule/detail",
+    "pages/notification/list",
+    "pages/notification/detail",
+    "pages/notification/create",
+    "pages/notification/stats"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "源力引擎",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3B82F6",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      { "pagePath": "pages/dashboard/index", "text": "首页" },
+      { "pagePath": "pages/activity/apply", "text": "申请" },
+      { "pagePath": "pages/schedule/calendar", "text": "排期" },
+      { "pagePath": "pages/notification/list", "text": "通知" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  },
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-steps": "@vant/weapp/steps/index",
+    "van-calendar": "@vant/weapp/calendar/index",
+    "van-dropdown-menu": "@vant/weapp/dropdown-menu/index",
+    "van-dropdown-item": "@vant/weapp/dropdown-item/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-overlay": "@vant/weapp/overlay/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-checkbox": "@vant/weapp/checkbox/index",
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-transition": "@vant/weapp/transition/index",
+    "van-grid": "@vant/weapp/grid/index",
+    "van-grid-item": "@vant/weapp/grid-item/index"
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,12 @@
+.item-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1F2937;
+  flex: 1;
+  margin-right: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ml-24 { margin-left: 24rpx; }

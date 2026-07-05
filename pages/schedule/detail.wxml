@@ -1,0 +1,14 @@
+<view class="container" wx:if="{{ activity }}">
+  <view class="card">
+    <view class="detail-title">{{ activity.title }}</view>
+
+    <van-cell-group inset>
+      <van-cell title="主办方" value="{{ activity.organizer }}" />
+      <van-cell title="活动日期" value="{{ activity.date }}" />
+      <van-cell title="时间" value="{{ activity.start_time }} - {{ activity.end_time }}" />
+      <van-cell title="地点" value="{{ activity.location }}" />
+    </van-cell-group>
+  </view>
+</view>
+
+<van-empty wx:if="{{ !activity }}" description="活动不存在" image="network" />

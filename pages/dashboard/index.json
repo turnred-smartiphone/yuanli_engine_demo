@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "全院学生工作动态",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "ec-canvas": "../../components/ec-canvas/ec-canvas"
+  }
+}

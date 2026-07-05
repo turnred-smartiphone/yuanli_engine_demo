@@ -1,0 +1,42 @@
+<view class="login-container">
+  <view class="login-header">
+    <view class="logo-area">
+      <view class="logo-icon">⚡</view>
+    </view>
+    <view class="app-name">源力引擎</view>
+    <view class="app-desc">校园学生工作管理平台</view>
+  </view>
+
+  <view class="login-body">
+    <view class="info-card">
+      <view class="info-item">
+        <van-icon name="star-o" size="36rpx" color="#3B82F6" />
+        <text class="info-text">一键登录，快速进入</text>
+      </view>
+      <view class="info-item">
+        <van-icon name="orders-o" size="36rpx" color="#3B82F6" />
+        <text class="info-text">活动审批、排期管理全搞定</text>
+      </view>
+      <view class="info-item">
+        <van-icon name="chat-o" size="36rpx" color="#3B82F6" />
+        <text class="info-text">通知消息不遗漏</text>
+      </view>
+    </view>
+
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      loading="{{loading}}"
+      bind:click="handleLogin"
+      class="login-btn"
+    >
+      微信一键登录
+    </van-button>
+
+    <view class="login-tip">首次登录需绑定学号/工号</view>
+  </view>
+</view>
+
+<van-toast id="van-toast" />

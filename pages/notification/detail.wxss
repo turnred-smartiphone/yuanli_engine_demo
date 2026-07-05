@@ -1,0 +1,54 @@
+.detail-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 16rpx;
+}
+
+.content-text {
+  font-size: 28rpx;
+  color: #374151;
+  line-height: 1.8;
+  padding: 20rpx;
+  background: #F9FAFB;
+  border-radius: 8rpx;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #9CA3AF;
+  margin-top: 4rpx;
+}
+
+.ml-24 { margin-left: 24rpx; }
+
+.action-area {
+  padding: 40rpx 24rpx;
+}
+
+.confirmed-badge {
+  padding: 40rpx 24rpx;
+}
+
+.badge-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 28rpx;
+  background: #ECFDF5;
+  border-radius: 12rpx;
+  color: #22C55E;
+  font-size: 30rpx;
+  font-weight: 500;
+}

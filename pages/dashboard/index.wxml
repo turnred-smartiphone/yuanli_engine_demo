@@ -1,0 +1,81 @@
+<view class="container">
+  <view class="dashboard-header">
+    <view class="greeting">{{ greeting }}</view>
+    <view class="header-title">全院学生工作动态</view>
+    <view class="header-date">{{ todayDate }}</view>
+  </view>
+
+  <view class="grid-2">
+    <view class="card card-elevated" bind:tap="goApprovalList">
+      <view class="flex-between mb-16">
+        <view class="card-label">待审批事项</view>
+        <view class="card-icon card-icon-warning">📋</view>
+      </view>
+      <view class="card-value text-warning">{{ dashboard.pendingCount }}</view>
+      <view class="card-footer">
+        <text class="text-secondary">条待处理</text>
+        <text class="card-link">查看 ></text>
+      </view>
+    </view>
+
+    <view class="card card-elevated" bind:tap="goSchedule">
+      <view class="flex-between mb-16">
+        <view class="card-label">本周活动</view>
+        <view class="card-icon card-icon-primary">📅</view>
+      </view>
+      <view class="card-value text-primary">{{ dashboard.weekActivityCount }}</view>
+      <view class="card-footer">
+        <text class="text-secondary">个活动</text>
+        <text class="card-link">查看 ></text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" bind:tap="goNotification">
+    <view class="card-header">
+      <view class="card-label">通知确认率</view>
+      <view class="card-link">详情 ></view>
+    </view>
+    <view class="flex-row" style="align-items: flex-end; gap: 24rpx;">
+      <view class="card-value">{{ dashboard.confirmRate }}%</view>
+      <view style="flex: 1;">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{ dashboard.confirmRate }}%"></view>
+        </view>
+        <view class="flex-between mt-12">
+          <text class="text-secondary" style="font-size: 22rpx;">已确认 {{ dashboard.confirmedCount }} 条</text>
+          <text class="text-secondary" style="font-size: 22rpx;">共 {{ dashboard.totalNotices }} 条</text>
+        </view>
+      </view>
+    </view>
+    <view class="chart-container mt-24" wx:if="{{ dashboard.recentRates.length }}">
+      <view class="chart-title">最近通知确认率</view>
+      <view class="mini-bars">
+        <view class="bar-item" wx:for="{{ dashboard.recentRates }}" wx:key="index">
+          <view class="bar-fill" style="height: {{ item.rate * 1.6 }}rpx;"></view>
+          <view class="bar-label">{{ item.rate }}%</view>
+          <view class="bar-name">{{ item.title }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{ dashboard.orgRankings.length }}">
+    <view class="card-header">
+      <view class="card-label">组织活跃度排行</view>
+      <view class="card-link">TOP {{ dashboard.orgRankings.length }}</view>
+    </view>
+    <view class="rank-item" wx:for="{{ dashboard.orgRankings }}" wx:key="index">
+      <view class="rank-num {{ index < 3 ? 'rank-top' : '' }}">{{ index + 1 }}</view>
+      <view class="rank-name">{{ item.name }}</view>
+      <view class="rank-count">{{ item.count }} 个活动</view>
+    </view>
+  </view>
+
+  <view class="empty-area" wx:if="{{ !loaded }}">
+    <van-loading size="40rpx" />
+    <text class="text-secondary mt-16">加载中...</text>
+  </view>
+</view>
+
+<van-toast id="van-toast" />

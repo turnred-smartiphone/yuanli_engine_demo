@@ -1,0 +1,20 @@
+.bind-header {
+  text-align: center;
+  padding: 48rpx 0 36rpx;
+}
+
+.step-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12rpx;
+}
+
+.step-desc {
+  font-size: 26rpx;
+  color: #6B7280;
+}
+
+.submit-area {
+  padding: 40rpx 28rpx 20rpx;
+}

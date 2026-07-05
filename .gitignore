@@ -1,0 +1,16 @@
+node_modules/
+miniprogram_npm/
+package-lock.json
+.DS_Store
+
+# 微信开发者工具
+.idea/
+*.swp
+*.swo
+*~
+
+# 云函数依赖
+cloudfunctions/*/node_modules/
+
+# 环境配置（含密钥，勿提交）
+project.private.config.json

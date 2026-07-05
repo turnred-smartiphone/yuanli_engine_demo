@@ -1,0 +1,65 @@
+<view class="container">
+  <view class="card">
+    <view class="form-title">发起新通知</view>
+
+    <van-cell-group inset>
+      <van-field
+        model:value="{{ form.title }}"
+        label="通知标题"
+        placeholder="请输入通知标题"
+        required
+      />
+      <van-field
+        model:value="{{ form.content }}"
+        label="通知内容"
+        type="textarea"
+        placeholder="请输入通知内容"
+        required
+        autosize
+      />
+      <van-cell
+        title="接收组织"
+        value="{{ form.targetOrgName }}"
+        is-link
+        bind:click="showOrgPicker"
+      />
+      <van-cell
+        title="接收角色"
+        value="{{ form.targetRoleName }}"
+        is-link
+        bind:click="showRolePicker"
+      />
+    </van-cell-group>
+
+    <view class="submit-area">
+      <van-button
+        type="primary"
+        size="large"
+        round
+        block
+        loading="{{ submitting }}"
+        bind:click="handleSubmit"
+      >
+        发送通知
+      </van-button>
+    </view>
+  </view>
+
+  <van-popup show="{{ showOrg }}" position="bottom" bind:close="onOrgClose">
+    <van-picker
+      columns="{{ orgOptions }}"
+      bind:confirm="onOrgConfirm"
+      bind:cancel="onOrgClose"
+    />
+  </van-popup>
+
+  <van-popup show="{{ showRole }}" position="bottom" bind:close="onRoleClose">
+    <van-picker
+      columns="{{ roleOptions }}"
+      bind:confirm="onRoleConfirm"
+      bind:cancel="onRoleClose"
+    />
+  </van-popup>
+</view>
+
+<van-toast id="van-toast" />

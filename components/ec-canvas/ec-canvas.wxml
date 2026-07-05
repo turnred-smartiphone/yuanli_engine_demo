@@ -1,0 +1,13 @@
+<view class="ec-canvas-container">
+  <canvas
+    wx:if="{{!useNewCanvas}}"
+    type="2d"
+    class="ec-canvas"
+    canvas-id="{{canvasId}}"
+    bindinit="init"
+    bindtouchstart="{{ec.disableTouch ? '' : 'touchStart'}}"
+    bindtouchmove="{{ec.disableTouch ? '' : 'touchMove'}}"
+    bindtouchend="{{ec.disableTouch ? '' : 'touchEnd'}}"
+    style="width: {{ec.width}}px; height: {{ec.height}}px"
+  />
+</view>

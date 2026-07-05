@@ -1,0 +1,30 @@
+<view class="container">
+  <van-empty
+    wx:if="{{ list.length === 0 && !loading }}"
+    description="暂无待审批事项"
+    image="search"
+  />
+
+  <view wx:for="{{ list }}" wx:key="_id" class="card" bind:tap="goDetail" data-id="{{ item._id }}">
+    <view class="flex-between mb-12">
+      <view class="item-title">{{ item.title }}</view>
+      <view class="tag tag-warning">
+        {{ item.approval_level === 2 ? '待老师审批' : '待主席审批' }}
+      </view>
+    </view>
+    <view class="flex-row text-secondary" style="font-size: 24rpx;">
+      <text>申请人：{{ item.applicant_name }}</text>
+      <text class="ml-24">主办方：{{ item.organizer }}</text>
+    </view>
+    <view class="text-secondary mt-8" style="font-size: 24rpx;">
+      <text>{{ item.date }} {{ item.start_time }}-{{ item.end_time }}</text>
+    </view>
+    <view class="text-secondary mt-8" style="font-size: 24rpx;">
+      <text>地点：{{ item.location }}</text>
+    </view>
+  </view>
+
+  <van-loading wx:if="{{ loading }}" size="40rpx" style="text-align: center; padding: 40rpx;" />
+</view>
+
+<van-dialog id="van-dialog" />

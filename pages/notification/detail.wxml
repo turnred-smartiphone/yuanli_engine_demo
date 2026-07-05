@@ -1,0 +1,52 @@
+<view class="container" wx:if="{{ notification }}">
+  <view class="card">
+    <view class="detail-title">{{ notification.title }}</view>
+    <view class="flex-row text-secondary mb-24" style="font-size: 24rpx;">
+      <text>发送人：{{ notification.sender_name }}</text>
+      <text class="ml-24">时间：{{ notification.created_at }}</text>
+    </view>
+    <view class="content-text">{{ notification.content }}</view>
+  </view>
+
+  <view class="card mt-24" wx:if="{{ notification.confirmStats }}">
+    <view class="card-header">
+      <view class="card-title">确认统计</view>
+      <view class="text-primary" style="font-size: 24rpx;">确认率 {{ notification.confirmStats.rate }}%</view>
+    </view>
+    <view class="flex-row" style="gap: 40rpx;">
+      <view class="stat-item">
+        <view class="stat-value text-primary">{{ notification.confirmStats.confirmed }}</view>
+        <view class="stat-label">已确认</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{ notification.confirmStats.total }}</view>
+        <view class="stat-label">总人数</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="action-area" wx:if="{{ !notification.confirmed }}">
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      loading="{{ confirming }}"
+      bind:click="handleConfirm"
+      icon="success"
+    >
+      确认收到
+    </van-button>
+  </view>
+
+  <view class="confirmed-badge" wx:if="{{ notification.confirmed }}">
+    <view class="badge-inner">
+      <van-icon name="success" size="40rpx" color="#22C55E" />
+      <text>已确认收到</text>
+    </view>
+  </view>
+</view>
+
+<van-empty wx:if="{{ !notification }}" description="通知不存在" image="network" />
+
+<van-toast id="van-toast" />

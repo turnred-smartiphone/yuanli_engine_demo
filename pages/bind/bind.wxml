@@ -1,0 +1,72 @@
+<view class="container">
+  <view class="bind-header">
+    <view class="step-title">欢迎使用源力引擎</view>
+    <view class="step-desc">请填写以下信息完成绑定</view>
+  </view>
+
+  <view class="card">
+    <van-cell-group inset>
+      <van-field
+        model:value="{{ form.studentId }}"
+        label="学号/工号"
+        placeholder="请输入学号或工号"
+        required
+        clearable
+      />
+      <van-field
+        model:value="{{ form.name }}"
+        label="姓名"
+        placeholder="请输入真实姓名"
+        required
+        clearable
+      />
+      <van-cell
+        title="角色"
+        value="{{ roleName }}"
+        is-link
+        bind:click="showRolePicker"
+        required
+      />
+      <van-cell
+        title="所属组织"
+        value="{{ orgName }}"
+        is-link
+        bind:click="showOrgPicker"
+        required
+      />
+    </van-cell-group>
+
+    <view class="submit-area">
+      <van-button
+        type="primary"
+        size="large"
+        round
+        block
+        loading="{{submitting}}"
+        bind:click="handleSubmit"
+      >
+        确认绑定
+      </van-button>
+    </view>
+  </view>
+
+  <van-popup show="{{ showRole }}" position="bottom" bind:close="onRoleClose">
+    <van-picker
+      columns="{{ roles }}"
+      default-index="{{ roleIndex }}"
+      bind:confirm="onRoleConfirm"
+      bind:cancel="onRoleClose"
+    />
+  </van-popup>
+
+  <van-popup show="{{ showOrg }}" position="bottom" bind:close="onOrgClose">
+    <van-picker
+      columns="{{ organizations }}"
+      default-index="{{ orgIndex }}"
+      bind:confirm="onOrgConfirm"
+      bind:cancel="onOrgClose"
+    />
+  </van-popup>
+</view>
+
+<van-toast id="van-toast" />
