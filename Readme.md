@@ -16,4 +16,6 @@ npm i @vant/weapp -S --production
 
 本demo单纯只是让大家配置好相关开发工具，制作相当粗糙
 
+## 注意
 
+云开发环境配置参考config.example.js，配置好后，修改名字为config.js
