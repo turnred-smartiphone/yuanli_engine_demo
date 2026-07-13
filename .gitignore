@@ -14,3 +14,4 @@ cloudfunctions/*/node_modules/
 
 # 环境配置（含密钥，勿提交）
 project.private.config.json
+config.js

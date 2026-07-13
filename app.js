@@ -1,12 +1,13 @@
 const { initMockData } = require('./utils/mock');
+const config = require('./config');
 
 App({
   globalData: {
     openid: '',
     userInfo: null,
     isLogin: false,
-    role: '', // teacher / student_leader / student
-    cloudEnvId: 'cloud1-d3gag7xfh16eebcbf'
+    role: '',
+    cloudEnvId: config.cloudEnvId
   },
 
   onLaunch() {
