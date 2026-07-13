@@ -22,6 +22,10 @@ Page({
     }
   },
 
+  onTitleChange(e) { this.setData({ 'form.title': e.detail }); },
+  onDescriptionChange(e) { this.setData({ 'form.description': e.detail }); },
+  onLocationChange(e) { this.setData({ 'form.location': e.detail }); },
+
   showOrgPick() {
     wx.showActionSheet({
       itemList: ['学生会', '团委', '青年志愿者协会', '社团联合会', '各班级'],
@@ -61,30 +65,74 @@ Page({
 
     this.setData({ submitting: true });
 
-    const conflictCheck = this.checkConflict(date, startTime, endTime);
-    if (conflictCheck.length) {
-      this.setData({ submitting: false });
-      wx.showModal({
-        title: '撞期提醒',
-        content: `该时间段已有以下活动:\n${conflictCheck.map(c => c.title).join('\n')}\n\n是否继续提交？`,
-        success: (res) => {
-          if (res.confirm) this.doSubmit();
-        }
-      });
+    if (!wx.cloud) {
+      this.doMockSubmit();
       return;
     }
-    this.doSubmit();
-  },
 
-  checkConflict(date, startTime, endTime) {
-    const schedules = wx.getStorageSync('schedules') || [];
-    return schedules.filter(s => {
-      if (s.date !== date) return false;
-      return startTime < s.endTime && endTime > s.startTime;
+    wx.cloud.callFunction({
+      name: 'checkConflict',
+      data: { date, start_time: startTime, end_time: endTime }
+    }).then(res => {
+      const result = res.result || {};
+      if (result.hasConflict) {
+        const titles = result.data.map(c => c.title).join('\n');
+        wx.showModal({
+          title: '撞期提醒',
+          content: `该时间段已有以下活动:\n${titles}\n\n是否继续提交？`,
+          success: (modalRes) => {
+            if (!modalRes.confirm) {
+              this.setData({ submitting: false });
+            } else {
+              this.doSubmit();
+            }
+          }
+        });
+      } else {
+        this.doSubmit();
+      }
+    }).catch(err => {
+      console.error('checkConflict 调用失败', err);
+      this.doSubmit();
     });
   },
 
   doSubmit() {
+    if (!wx.cloud) {
+      this.doMockSubmit();
+      return;
+    }
+
+    wx.cloud.callFunction({
+      name: 'createActivity',
+      data: {
+        title: this.data.form.title,
+        description: this.data.form.description,
+        organizer: this.data.form.organizer,
+        start_time: this.data.form.date + ' ' + this.data.form.startTime,
+        end_time: this.data.form.date + ' ' + this.data.form.endTime,
+        location: this.data.form.location
+      }
+    }).then(res => {
+      const result = res.result || {};
+      if (result.code !== 0) {
+        this.setData({ submitting: false });
+        wx.showToast({ title: result.msg || '提交失败', icon: 'none' });
+        return;
+      }
+      this.setData({ submitting: false });
+      wx.showToast({ title: '提交成功', icon: 'success' });
+      setTimeout(() => {
+        wx.navigateTo({ url: '/pages/activity/my' });
+      }, 800);
+    }).catch(err => {
+      console.error('createActivity 调用失败', err);
+      this.setData({ submitting: false });
+      wx.showToast({ title: '提交失败，请重试', icon: 'none' });
+    });
+  },
+
+  doMockSubmit() {
     const userInfo = app.globalData.userInfo || {};
     const activity = {
       _id: 'act_' + Date.now(),

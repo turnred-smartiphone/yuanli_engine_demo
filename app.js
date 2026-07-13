@@ -6,7 +6,7 @@ App({
     userInfo: null,
     isLogin: false,
     role: '', // teacher / student_leader / student
-    cloudEnvId: 'your-cloud-env-id'
+    cloudEnvId: 'cloud1-d3gag7xfh16eebcbf'
   },
 
   onLaunch() {

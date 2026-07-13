@@ -1,1 +1,9 @@
-{ "name": "getNotificationList", "version": "1.0.0", "description": "获取通知列表" }
+{
+  "name": "getNotificationList",
+  "version": "1.0.0",
+  "description": "获取通知列表",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

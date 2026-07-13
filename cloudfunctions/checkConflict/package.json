@@ -1,1 +1,9 @@
-{ "name": "checkConflict", "version": "1.0.0", "description": "撞期检测" }
+{
+  "name": "checkConflict",
+  "version": "1.0.0",
+  "description": "撞期检测",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

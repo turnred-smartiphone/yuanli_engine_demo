@@ -1,1 +1,9 @@
-{ "name": "getMonthSchedule", "version": "1.0.0", "description": "获取月度排期" }
+{
+  "name": "getMonthSchedule",
+  "version": "1.0.0",
+  "description": "获取月度排期",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

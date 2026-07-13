@@ -1,1 +1,9 @@
-{ "name": "getDashboardData", "version": "1.0.0", "description": "获取首页看板数据" }
+{
+  "name": "getDashboardData",
+  "version": "1.0.0",
+  "description": "获取首页看板数据",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

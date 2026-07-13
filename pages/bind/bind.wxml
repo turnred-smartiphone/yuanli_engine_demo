@@ -7,33 +7,49 @@
   <view class="card">
     <van-cell-group inset>
       <van-field
-        model:value="{{ form.studentId }}"
+        value="{{ form.studentId }}"
         label="学号/工号"
         placeholder="请输入学号或工号"
         required
         clearable
+        bind:change="onStudentIdChange"
       />
       <van-field
-        model:value="{{ form.name }}"
+        value="{{ form.name }}"
         label="姓名"
         placeholder="请输入真实姓名"
         required
         clearable
+        bind:change="onNameChange"
       />
-      <van-cell
-        title="角色"
-        value="{{ roleName }}"
-        is-link
-        bind:click="showRolePicker"
-        required
-      />
-      <van-cell
-        title="所属组织"
-        value="{{ orgName }}"
-        is-link
-        bind:click="showOrgPicker"
-        required
-      />
+      <picker
+        mode="selector"
+        range="{{ roles }}"
+        range-key="text"
+        value="{{ roleIndex }}"
+        bindchange="onRoleChange"
+      >
+        <van-cell
+          title="角色"
+          value="{{ roleName || '请选择角色' }}"
+          is-link
+          required
+        />
+      </picker>
+      <picker
+        mode="selector"
+        range="{{ organizations }}"
+        range-key="text"
+        value="{{ orgIndex }}"
+        bindchange="onOrgChange"
+      >
+        <van-cell
+          title="所属组织"
+          value="{{ orgName || '请选择组织' }}"
+          is-link
+          required
+        />
+      </picker>
     </van-cell-group>
 
     <view class="submit-area">
@@ -49,24 +65,6 @@
       </van-button>
     </view>
   </view>
-
-  <van-popup show="{{ showRole }}" position="bottom" bind:close="onRoleClose">
-    <van-picker
-      columns="{{ roles }}"
-      default-index="{{ roleIndex }}"
-      bind:confirm="onRoleConfirm"
-      bind:cancel="onRoleClose"
-    />
-  </van-popup>
-
-  <van-popup show="{{ showOrg }}" position="bottom" bind:close="onOrgClose">
-    <van-picker
-      columns="{{ organizations }}"
-      default-index="{{ orgIndex }}"
-      bind:confirm="onOrgConfirm"
-      bind:cancel="onOrgClose"
-    />
-  </van-popup>
 </view>
 
 <van-toast id="van-toast" />

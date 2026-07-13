@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/dashboard/index",
     "pages/login/login",
     "pages/bind/bind",
+    "pages/dashboard/index",
     "pages/mine/index",
     "pages/activity/apply",
     "pages/activity/my",

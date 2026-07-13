@@ -1,1 +1,9 @@
-{ "name": "getApprovalList", "version": "1.0.0", "description": "获取审批列表" }
+{
+  "name": "getApprovalList",
+  "version": "1.0.0",
+  "description": "获取审批列表",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

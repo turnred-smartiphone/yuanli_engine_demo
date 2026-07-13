@@ -7,10 +7,20 @@ Page({
 
   loadList() {
     this.setData({ loading: true });
-    const activities = wx.getStorageSync('activities') || [];
-    setTimeout(() => {
+
+    if (!wx.cloud) {
+      const activities = wx.getStorageSync('activities') || [];
       this.setData({ list: activities, loading: false });
-    }, 300);
+      return;
+    }
+
+    wx.cloud.callFunction({ name: 'getMyActivities' }).then(res => {
+      const result = res.result || {};
+      this.setData({ list: result.data || [], loading: false });
+    }).catch(err => {
+      console.error('getMyActivities 调用失败', err);
+      this.setData({ loading: false });
+    });
   },
 
   statusClass(status) {

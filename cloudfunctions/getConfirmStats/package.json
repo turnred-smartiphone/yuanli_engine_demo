@@ -1,1 +1,9 @@
-{ "name": "getConfirmStats", "version": "1.0.0", "description": "获取确认统计" }
+{
+  "name": "getConfirmStats",
+  "version": "1.0.0",
+  "description": "获取确认统计",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

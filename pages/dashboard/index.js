@@ -50,31 +50,37 @@ Page({
   loadDashboardData() {
     this.setData({ loaded: false });
 
-    const userRole = app.globalData.role;
-    if (userRole === 'student') {
-      const data = {
-        pendingCount: 0,
-        weekActivityCount: 4,
-        confirmRate: 80,
-        confirmedCount: 8,
-        totalNotices: 10,
-        recentRates: [
-          { title: '期末安排', rate: 85 },
-          { title: '下周例会', rate: 72 },
-          { title: '社团招新', rate: 90 },
-          { title: '运动会', rate: 68 },
-          { title: '考试通知', rate: 95 }
-        ],
-        orgRankings: [
-          { name: '学生会', count: 12 },
-          { name: '团委', count: 8 },
-          { name: '青年志愿者协会', count: 6 }
-        ]
-      };
-      this.setData({ dashboard: data, loaded: true });
+    if (!wx.cloud) {
+      this.loadMockData();
       return;
     }
 
+    wx.cloud.callFunction({ name: 'getDashboardData' }).then(res => {
+      const result = res.result || {};
+      if (result.code !== 0) {
+        this.loadMockData();
+        return;
+      }
+      const d = result.data;
+      this.setData({
+        dashboard: {
+          pendingCount: d.pendingCount || 0,
+          weekActivityCount: d.weekActivityCount || 0,
+          confirmRate: d.confirmRate || 0,
+          confirmedCount: d.confirmedCount || 0,
+          totalNotices: d.totalNotices || 0,
+          recentRates: d.recentRates || [],
+          orgRankings: d.orgRankings || []
+        },
+        loaded: true
+      });
+    }).catch(err => {
+      console.error('getDashboardData 调用失败', err);
+      this.loadMockData();
+    });
+  },
+
+  loadMockData() {
     setTimeout(() => {
       const data = {
         pendingCount: 5,
@@ -92,9 +98,7 @@ Page({
         orgRankings: [
           { name: '学生会', count: 12 },
           { name: '团委', count: 8 },
-          { name: '青年志愿者协会', count: 6 },
-          { name: '社团联合会', count: 4 },
-          { name: '各班级', count: 3 }
+          { name: '青年志愿者协会', count: 6 }
         ]
       };
       this.setData({ dashboard: data, loaded: true });

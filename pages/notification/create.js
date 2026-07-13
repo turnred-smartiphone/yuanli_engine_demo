@@ -1,5 +1,3 @@
-const app = getApp();
-
 Page({
   data: {
     form: { title: '', content: '', targetOrg: 'all', targetOrgName: '全部组织', targetRole: 'all', targetRoleName: '全部角色' },
@@ -22,6 +20,9 @@ Page({
 
   showOrgPicker() { this.setData({ showOrg: true }); },
   onOrgClose() { this.setData({ showOrg: false }); },
+
+  onTitleChange(e) { this.setData({ 'form.title': e.detail }); },
+  onContentChange(e) { this.setData({ 'form.content': e.detail }); },
   onOrgConfirm(e) {
     const { index } = e.detail;
     const item = this.data.orgOptions[index];
@@ -52,33 +53,40 @@ Page({
     }
 
     this.setData({ submitting: true });
-    const userInfo = app.globalData.userInfo || {};
 
-    const notification = {
-      _id: 'noti_' + Date.now(),
-      title,
-      content,
-      sender_id: userInfo.student_id,
-      sender_name: userInfo.name,
-      target_organization: this.data.form.targetOrg,
-      target_role: this.data.form.targetRole,
-      receivers: ['demo_user_1', 'demo_user_2', 'demo_user_3', 'demo_user_4', 'demo_user_5'],
-      total_count: 5,
-      confirmed_count: 0,
-      confirmed_list: [],
-      created_at: new Date().toISOString().slice(0, 10)
-    };
+    if (!wx.cloud) {
+      setTimeout(() => {
+        this.setData({ submitting: false });
+        wx.showToast({ title: '发送成功', icon: 'success' });
+        setTimeout(() => { wx.switchTab({ url: '/pages/notification/list' }); }, 800);
+      }, 500);
+      return;
+    }
 
-    setTimeout(() => {
-      let notifications = wx.getStorageSync('notifications') || [];
-      notifications.unshift(notification);
-      wx.setStorageSync('notifications', notifications);
-
+    wx.cloud.callFunction({
+      name: 'createNotification',
+      data: {
+        title,
+        content,
+        target_organization: this.data.form.targetOrg,
+        target_role: this.data.form.targetRole
+      }
+    }).then(res => {
+      const result = res.result || {};
+      if (result.code !== 0) {
+        this.setData({ submitting: false });
+        wx.showToast({ title: result.msg || '发送失败', icon: 'none' });
+        return;
+      }
       this.setData({ submitting: false });
       wx.showToast({ title: '发送成功', icon: 'success' });
       setTimeout(() => {
         wx.switchTab({ url: '/pages/notification/list' });
       }, 800);
-    }, 500);
+    }).catch(err => {
+      console.error('createNotification 调用失败', err);
+      this.setData({ submitting: false });
+      wx.showToast({ title: '发送失败，请重试', icon: 'none' });
+    });
   }
 });

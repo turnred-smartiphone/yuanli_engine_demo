@@ -1,1 +1,9 @@
-{ "name": "approveActivity", "version": "1.0.0", "description": "审批活动" }
+{
+  "name": "approveActivity",
+  "version": "1.0.0",
+  "description": "审批活动",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

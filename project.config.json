@@ -53,12 +53,13 @@
     "disableSWC": true
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.4",
-  "appid": "wx6b5c1befd4496918",
+  "libVersion": "3.16.2",
+  "appid": "wxaa28e994d8e43310",
   "projectname": "yuanli-engine",
   "cloudfunctionRoot": "cloudfunctions/",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {},
-  "editorSetting": {}
+  "editorSetting": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

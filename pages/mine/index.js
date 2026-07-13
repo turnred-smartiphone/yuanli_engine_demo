@@ -4,7 +4,8 @@ Page({
   data: {
     userInfo: {},
     roleText: '',
-    orgText: ''
+    orgText: '',
+    isLogin: false
   },
 
   onShow() {
@@ -27,9 +28,14 @@ Page({
     };
     this.setData({
       userInfo,
+      isLogin: !!(userInfo && userInfo.student_id),
       roleText: roleMap[userInfo.role] || '',
       orgText: orgMap[userInfo.organization] || ''
     });
+  },
+
+  goLogin() {
+    wx.reLaunch({ url: '/pages/login/login' });
   },
 
   handleLogout() {

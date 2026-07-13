@@ -1,6 +1,6 @@
 <view class="container">
   <van-search
-    model:value="{{ keyword }}"
+    value="{{ keyword }}"
     placeholder="搜索通知"
     bind:change="onSearch"
     bind:search="onSearch"
@@ -15,11 +15,11 @@
   <view wx:for="{{ list }}" wx:key="_id" class="card" bind:tap="goDetail" data-id="{{ item._id }}">
     <view class="flex-between mb-12">
       <view class="flex-row">
-        <view class="status-dot {{ item.confirmed ? 'approved' : 'pending' }}"></view>
+        <view class="status-dot {{ item.isConfirmed ? 'approved' : 'pending' }}"></view>
         <view class="noti-title">{{ item.title }}</view>
       </view>
-      <view class="tag {{ item.confirmed ? 'tag-success' : 'tag-warning' }}" style="font-size: 20rpx;">
-        {{ item.confirmed ? '已确认' : '待确认' }}
+      <view class="tag {{ item.isConfirmed ? 'tag-success' : 'tag-warning' }}" style="font-size: 20rpx;">
+        {{ item.isConfirmed ? '已确认' : '待确认' }}
       </view>
     </view>
     <view class="text-secondary" style="font-size: 24rpx;">

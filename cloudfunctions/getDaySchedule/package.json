@@ -1,1 +1,9 @@
-{ "name": "getDaySchedule", "version": "1.0.0", "description": "获取某天排期" }
+{
+  "name": "getDaySchedule",
+  "version": "1.0.0",
+  "description": "获取某天排期",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

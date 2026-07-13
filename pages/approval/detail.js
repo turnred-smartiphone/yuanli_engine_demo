@@ -12,23 +12,41 @@ Page({
   },
 
   loadActivity(id) {
-    const activities = wx.getStorageSync('activities') || [];
-    const activity = activities.find(a => a._id === id);
-    if (activity) {
-      this.setData({ activity });
-      const userRole = app.globalData.role;
-      const role = userRole;
-      let can = false;
-      if (activity.status === 'pending') {
-        if (activity.approval_level === 1 && role === 'student_leader') can = true;
-        if (activity.approval_level === 2 && role === 'teacher') can = true;
-      }
-      const stMap = { pending: '待审批', approved: '已通过', rejected: '已驳回' };
-      this.setData({
-        statusText: stMap[activity.status] || activity.status,
-        canApprove: can
-      });
+    if (!wx.cloud) {
+      const activities = wx.getStorageSync('activities') || [];
+      const activity = activities.find(a => a._id === id);
+      if (activity) this.renderActivity(activity);
+      return;
     }
+
+    wx.cloud.callFunction({
+      name: 'getActivityDetail',
+      data: { activity_id: id }
+    }).then(res => {
+      const result = res.result || {};
+      if (result.code !== 0) {
+        wx.showToast({ title: result.msg || '加载失败', icon: 'none' });
+        return;
+      }
+      this.renderActivity(result.data);
+    }).catch(err => {
+      console.error('getActivityDetail 调用失败', err);
+    });
+  },
+
+  renderActivity(activity) {
+    const userRole = app.globalData.role;
+    let can = false;
+    if (activity.status === 'pending') {
+      if (activity.approval_level === 1 && userRole === 'student_leader') can = true;
+      if (activity.approval_level === 2 && userRole === 'teacher') can = true;
+    }
+    const stMap = { pending: '待审批', approved: '已通过', rejected: '已驳回' };
+    this.setData({
+      activity,
+      statusText: stMap[activity.status] || activity.status,
+      canApprove: can
+    });
   },
 
   handleApprove() {
@@ -56,6 +74,33 @@ Page({
   },
 
   doApproval(status, comment) {
+    if (!wx.cloud) {
+      this.doMockApproval(status, comment);
+      return;
+    }
+
+    wx.cloud.callFunction({
+      name: 'approveActivity',
+      data: {
+        activity_id: this.data.activity._id,
+        status,
+        comment
+      }
+    }).then(res => {
+      const result = res.result || {};
+      if (result.code !== 0) {
+        wx.showToast({ title: result.msg || '操作失败', icon: 'none' });
+        return;
+      }
+      wx.showToast({ title: status === 'approved' ? '已通过' : '已驳回', icon: 'success' });
+      setTimeout(() => wx.navigateBack(), 800);
+    }).catch(err => {
+      console.error('approveActivity 调用失败', err);
+      wx.showToast({ title: '操作失败，请重试', icon: 'none' });
+    });
+  },
+
+  doMockApproval(status, comment) {
     const userInfo = app.globalData.userInfo || {};
     const approval = {
       approver_name: userInfo.name,
@@ -78,26 +123,22 @@ Page({
       activities[idx].approval_level = 2;
     } else {
       activities[idx].status = 'approved';
-      this.addToSchedule(activities[idx]);
+      let schedules = wx.getStorageSync('schedules') || [];
+      schedules.push({
+        _id: 'sch_' + activities[idx]._id,
+        activity_id: activities[idx]._id,
+        title: activities[idx].title,
+        date: activities[idx].date,
+        start_time: activities[idx].start_time,
+        end_time: activities[idx].end_time,
+        location: activities[idx].location,
+        organizer: activities[idx].organizer
+      });
+      wx.setStorageSync('schedules', schedules);
     }
 
     wx.setStorageSync('activities', activities);
     wx.showToast({ title: status === 'approved' ? '已通过' : '已驳回', icon: 'success' });
     setTimeout(() => wx.navigateBack(), 800);
-  },
-
-  addToSchedule(activity) {
-    let schedules = wx.getStorageSync('schedules') || [];
-    schedules.push({
-      _id: 'sch_' + activity._id,
-      activity_id: activity._id,
-      title: activity.title,
-      date: activity.date,
-      start_time: activity.start_time,
-      end_time: activity.end_time,
-      location: activity.location,
-      organizer: activity.organizer
-    });
-    wx.setStorageSync('schedules', schedules);
   }
 });

@@ -4,18 +4,20 @@
 
     <van-cell-group inset>
       <van-field
-        model:value="{{ form.title }}"
+        value="{{ form.title }}"
         label="通知标题"
         placeholder="请输入通知标题"
         required
+        bind:change="onTitleChange"
       />
       <van-field
-        model:value="{{ form.content }}"
+        value="{{ form.content }}"
         label="通知内容"
         type="textarea"
         placeholder="请输入通知内容"
         required
         autosize
+        bind:change="onContentChange"
       />
       <van-cell
         title="接收组织"

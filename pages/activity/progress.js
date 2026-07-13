@@ -1,35 +1,46 @@
 Page({
   data: {
     activity: null,
-    steps: [
-      { text: '提交申请', desc: '' },
-      { text: '主席审批', desc: '等待中' },
-      { text: '老师审批', desc: '等待中' },
-      { text: '完成', desc: '' }
-    ],
+    steps: [],
     activeStep: 0
   },
 
   onLoad(options) {
-    if (options.id) {
-      this.loadActivity(options.id);
-    }
+    if (options.id) this.loadActivity(options.id);
   },
 
   loadActivity(id) {
-    const activities = wx.getStorageSync('activities') || [];
-    const activity = activities.find(a => a._id === id);
-    if (activity) {
-      this.setData({ activity });
-      this.updateSteps(activity);
+    if (!wx.cloud) {
+      const activities = wx.getStorageSync('activities') || [];
+      const activity = activities.find(a => a._id === id);
+      if (activity) this.updateStepsLocally(activity);
+      return;
     }
+
+    wx.cloud.callFunction({
+      name: 'getApprovalProgress',
+      data: { activity_id: id }
+    }).then(res => {
+      const result = res.result || {};
+      if (result.code !== 0) {
+        wx.showToast({ title: result.msg || '加载失败', icon: 'none' });
+        return;
+      }
+      this.setData({
+        activity: { _id: id, status: result.data.status },
+        steps: result.data.steps,
+        activeStep: result.data.steps.length - 1
+      });
+    }).catch(err => {
+      console.error('getApprovalProgress 调用失败', err);
+    });
   },
 
-  updateSteps(activity) {
+  updateStepsLocally(activity) {
+    this.setData({ activity });
     const steps = [
       { text: '提交申请', desc: activity.created_at ? activity.created_at.slice(0, 10) : '' }
     ];
-
     let active = 0;
     if (activity.status === 'rejected') {
       steps.push(
@@ -62,7 +73,6 @@ Page({
       );
       active = 3;
     }
-
     this.setData({ steps, activeStep: active });
   }
 });

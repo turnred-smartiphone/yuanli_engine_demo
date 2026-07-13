@@ -1,1 +1,9 @@
-{ "name": "confirmNotification", "version": "1.0.0", "description": "确认通知" }
+{
+  "name": "confirmNotification",
+  "version": "1.0.0",
+  "description": "确认通知",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
+

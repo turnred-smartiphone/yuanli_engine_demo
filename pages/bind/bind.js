@@ -15,7 +15,6 @@ Page({
     ],
     roleIndex: 0,
     roleName: '',
-    showRole: false,
     organizations: [
       { text: '学生会', value: 'student_union' },
       { text: '团委', value: 'youth_league' },
@@ -25,34 +24,35 @@ Page({
     ],
     orgIndex: 0,
     orgName: '',
-    showOrg: false,
     submitting: false
   },
 
-  showRolePicker() { this.setData({ showRole: true }); },
-  onRoleClose() { this.setData({ showRole: false }); },
-  onRoleConfirm(e) {
-    const { index } = e.detail;
+  onRoleChange(e) {
+    const index = Number(e.detail.value);
     const role = this.data.roles[index];
     this.setData({
       roleIndex: index,
       roleName: role.text,
-      'form.role': role.value,
-      showRole: false
+      'form.role': role.value
     });
   },
 
-  showOrgPicker() { this.setData({ showOrg: true }); },
-  onOrgClose() { this.setData({ showOrg: false }); },
-  onOrgConfirm(e) {
-    const { index } = e.detail;
+  onOrgChange(e) {
+    const index = Number(e.detail.value);
     const org = this.data.organizations[index];
     this.setData({
       orgIndex: index,
       orgName: org.text,
-      'form.organization': org.value,
-      showOrg: false
+      'form.organization': org.value
     });
+  },
+
+  onStudentIdChange(e) {
+    this.setData({ 'form.studentId': e.detail });
+  },
+
+  onNameChange(e) {
+    this.setData({ 'form.name': e.detail });
   },
 
   handleSubmit() {
@@ -64,28 +64,67 @@ Page({
 
     this.setData({ submitting: true });
 
-    const userInfo = {
-      openid: 'demo_' + studentId,
-      student_id: studentId,
-      name: name,
-      role: role,
-      organization: organization,
-      avatar: app.globalData.userInfo ? app.globalData.userInfo.avatarUrl : '',
-      created_at: new Date().toISOString()
-    };
+    if (wx.cloud) {
+      wx.cloud.callFunction({
+        name: 'bindUser',
+        data: {
+          student_id: studentId,
+          name: name,
+          role: role,
+          organization: organization
+        }
+      }).then(res => {
+        const result = res.result || {};
+        if (result.code !== 0) {
+          this.setData({ submitting: false });
+          wx.showToast({ title: result.msg || '绑定失败', icon: 'none' });
+          return;
+        }
+        this.finishBind({
+          openid: result.data.openid,
+          student_id: studentId,
+          name: name,
+          role: role,
+          organization: organization,
+          avatar: app.globalData.userInfo ? app.globalData.userInfo.avatarUrl : '',
+          created_at: new Date().toISOString()
+        });
+      }).catch(err => {
+        console.error('bindUser 调用失败', err);
+        this.doMockBind();
+      });
+    } else {
+      this.doMockBind();
+    }
+  },
 
+  doMockBind() {
+    const { studentId, name, role, organization } = this.data.form;
     setTimeout(() => {
-      wx.setStorageSync('userInfo', userInfo);
-      wx.setStorageSync('openid', userInfo.openid);
-      app.globalData.isLogin = true;
-      app.globalData.role = role;
-      app.globalData.openid = userInfo.openid;
-      app.globalData.userInfo = userInfo;
-
-      wx.showToast({ title: '绑定成功', icon: 'success' });
-      setTimeout(() => {
-        wx.switchTab({ url: '/pages/dashboard/index' });
-      }, 800);
+      this.finishBind({
+        openid: 'demo_' + studentId,
+        student_id: studentId,
+        name: name,
+        role: role,
+        organization: organization,
+        avatar: app.globalData.userInfo ? app.globalData.userInfo.avatarUrl : '',
+        created_at: new Date().toISOString()
+      });
     }, 500);
+  },
+
+  finishBind(userInfo) {
+    wx.setStorageSync('userInfo', userInfo);
+    wx.setStorageSync('openid', userInfo.openid);
+    app.globalData.isLogin = true;
+    app.globalData.role = userInfo.role;
+    app.globalData.openid = userInfo.openid;
+    app.globalData.userInfo = userInfo;
+
+    this.setData({ submitting: false });
+    wx.showToast({ title: '绑定成功', icon: 'success' });
+    setTimeout(() => {
+      wx.switchTab({ url: '/pages/dashboard/index' });
+    }, 800);
   }
 });

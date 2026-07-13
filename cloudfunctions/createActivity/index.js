@@ -15,6 +15,7 @@ exports.main = async (event) => {
     data: {
       title, description, organizer,
       start_time, end_time, location,
+      date: start_time.substring(0, 10),
       applicant_id: user._id,
       applicant_name: user.name,
       status: 'pending',

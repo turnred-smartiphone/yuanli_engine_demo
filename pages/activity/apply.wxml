@@ -4,21 +4,23 @@
 
     <van-cell-group inset>
       <van-field
-        model:value="{{ form.title }}"
+        value="{{ form.title }}"
         label="活动标题"
         placeholder="请输入活动标题"
         required
+        bind:change="onTitleChange"
       />
       <van-field
-        model:value="{{ form.description }}"
+        value="{{ form.description }}"
         label="活动描述"
         type="textarea"
         placeholder="请描述活动详情"
         required
         autosize
+        bind:change="onDescriptionChange"
       />
       <van-field
-        model:value="{{ form.organizer }}"
+        value="{{ form.organizer }}"
         label="主办方"
         placeholder="请输入主办方"
         readonly
@@ -27,7 +29,7 @@
         required
       />
       <van-field
-        model:value="{{ form.date }}"
+        value="{{ form.date }}"
         label="活动日期"
         placeholder="请选择日期"
         readonly
@@ -36,7 +38,7 @@
         required
       />
       <van-field
-        model:value="{{ form.startTime }}"
+        value="{{ form.startTime }}"
         label="开始时间"
         placeholder="请选择开始时间"
         readonly
@@ -45,7 +47,7 @@
         required
       />
       <van-field
-        model:value="{{ form.endTime }}"
+        value="{{ form.endTime }}"
         label="结束时间"
         placeholder="请选择结束时间"
         readonly
@@ -54,10 +56,11 @@
         required
       />
       <van-field
-        model:value="{{ form.location }}"
+        value="{{ form.location }}"
         label="活动地点"
         placeholder="请输入活动地点"
         required
+        bind:change="onLocationChange"
       />
     </van-cell-group>
 

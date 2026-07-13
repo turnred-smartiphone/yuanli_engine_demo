@@ -8,19 +8,23 @@ Page({
 
   loadList() {
     this.setData({ loading: true });
-    const activities = wx.getStorageSync('activities') || [];
-    const pending = activities.filter(a =>
-      a.status === 'pending' && (a.approval_level === 1 || a.approval_level === 2)
-    );
-    setTimeout(() => {
+
+    if (!wx.cloud) {
+      const activities = wx.getStorageSync('activities') || [];
+      const pending = activities.filter(a =>
+        a.status === 'pending' && (a.approval_level === 1 || a.approval_level === 2)
+      );
       this.setData({ list: pending, loading: false });
-      if (!pending.length) {
-        const demos = wx.getStorageSync('demoApprovals');
-        if (demos && demos.length) {
-          this.setData({ list: demos });
-        }
-      }
-    }, 300);
+      return Promise.resolve();
+    }
+
+    return wx.cloud.callFunction({ name: 'getApprovalList' }).then(res => {
+      const result = res.result || {};
+      this.setData({ list: result.data || [], loading: false });
+    }).catch(err => {
+      console.error('getApprovalList 调用失败', err);
+      this.setData({ loading: false });
+    });
   },
 
   goDetail(e) {
